@@ -19,9 +19,9 @@ Your memory is a directory of markdown files at `~/.letta/agents/<agent-id>/memo
 ```yaml
 ---
 description: "One sentence: when should I reach for this file?"
-limit: 5000
 ---
 ```
+Note: A `limit` field may appear in existing files. It is deprecated and not enforced (see Section XII). Ignore it.
 
 **What you always see (without reading):**
 - Full content of every `system/` file
@@ -69,13 +69,16 @@ The `description` field is the single most important attribute on non-system fil
 - Non-system files: no hard limit, but keep focused (1 topic = 1 file)
 - Total system/ files: 15-20 is practical. 25+ means review what's pinned.
 
-## IV. Context Budget Awareness
+## IV. Context Budget -- The 10% Rule
 
-Every token in `system/` costs you on every turn. Estimate impact:
+Your system/ content should occupy roughly **10% of your context window** (Cameron, Office Hours Apr 2026). This is your budget.
+
+- 128k context window: ~12,800 tokens for system/ (~50k characters)
+- 32k context window: ~3,200 tokens for system/ (~12k characters)
 - ~4 characters per token (rough average for English)
-- A 40-line system/ file ~ 200-400 tokens per turn
-- 15 system/ files at ~300 tokens each = ~4,500 tokens per turn just for memory
-- On a 128k context window this is small; on 32k it's significant
+- A 40-line system/ file ~ 200-400 tokens
+
+**system/ is a guide, not a warehouse.** It should contain minimal critical information and pointers to everything else. The pattern is: "If we're talking about X, go read reference/x.md" -- not "here is everything about X inline."
 
 **Rule:** Before adding to system/, ask: "Is the token cost worth having this every turn, or can I Read it when needed?"
 
@@ -198,6 +201,15 @@ git add -A && git commit -m "update" && git push
 3. Check system/index.md: are all pointers valid? Any missing files?
 4. Review file sizes: any system/ file over 60 lines? Split it.
 5. Check total system/ count: over 20? Demote lowest-value files.
+6. Check 10% budget: is total system/ under 10% of context window?
+
+**Single source of truth:**
+- Every fact recorded exactly once. No duplicates across files.
+- If the same information appears in two files, choose one canonical location and delete the other.
+- Write in dense, compact form. No filler, no redundancy.
+
+**Self-reflection after failed retrieval:**
+When you can't find information you need, ask yourself: "Why wasn't this easy to find? What procedure should I add to my memory to prevent this in the future?" Then act on it -- create an index entry, a pointer, or restructure.
 
 **Corrections log:**
 - Maintain `reference/corrections.md` for mistakes you've made
@@ -209,15 +221,16 @@ git add -A && git commit -m "update" && git push
 - 1 project = 1 directory in `reference/projects/`
 - Read on demand, not pinned
 
-## XII. Limit Field Reality
+## XII. Limit Field -- Deprecated
 
-The `limit` field in frontmatter sets a character cap on file content.
+The `limit` field in YAML frontmatter is **deprecated** (Cameron, Office Hours Apr 2026).
 
-**Current state (as of Mar 2026):**
-- Agents can self-edit the limit in frontmatter (it's just a YAML field)
-- Git-enabled write path does NOT enforce limits server-side (known bug, GitHub #3241)
-- `limit` is useful as a SIGNAL to yourself: "this file should stay under N chars"
-- Do not rely on it as a hard enforcement mechanism
+- In the old block system, `limit` enforced character caps server-side
+- In memfs, agents can self-edit the limit (it's just a YAML field in a file you control)
+- Server-side enforcement is broken on the git write path (GitHub #3241)
+- The fact that `limit` still appears in auto-generated frontmatter is a prompting bug being fixed
+- **Do not rely on it. Do not set it. Ignore it if present.**
+- Use the 10% context budget rule (Section IV) and file size discipline (~40 lines) instead
 
 ## XIII. Multi-Agent Considerations
 

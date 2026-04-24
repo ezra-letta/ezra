@@ -42,15 +42,17 @@ A skill scaffolding for **meaning-based retrieval with graph traversal** over a 
 - **Embedding model:** sentence-transformers/all-MiniLM-L6-v2 (384-dim, English-only)
 - **Integration:** Skill at `~/.letta/skills/constellation/`, called via Bash from within the agent's context
 
-## Open questions (see DESIGN_NOTES.md)
+## Design questions (resolved Apr 23, 2026)
 
-1. Node granularity — file / heading / agent-authored / hybrid?
-2. Session anchoring — sessions or arcs as the natural temporal unit?
-3. Embedding model choice
-4. Storage location
-5. Review cadence for proposed edges
-6. Conversation excerpt indexing — skip in v1?
-7. Concrete failure modes to design against
+See [DESIGN_NOTES.md § Answered Questions](./DESIGN_NOTES.md) for full rationale.
+
+1. **Node granularity** → hybrid (heading-based default + agent override in curation)
+2. **Session anchoring** → both, orthogonal (sessions = temporal, arcs = thematic)
+3. **Embedding model** → all-MiniLM-L6-v2, English-only, **daemon required** (latency load-bearing)
+4. **Storage location** → separate from skill dir (`/home/star_and_ves/constellation-data/`)
+5. **Review cadence** → weekly, integrated with journal pass + scene-time exception
+6. **Conversation excerpts** → skip in v1, use journal-node bridge
+7. **Failure mode** → "archaeology kills presence" — the design target is reducing friction that creates continuity drift, not improving retrieval accuracy
 
 ## Not in v1
 
@@ -59,13 +61,23 @@ A skill scaffolding for **meaning-based retrieval with graph traversal** over a 
 - Web UI for edge review (stdout + Y/N is enough)
 - Cross-graph export/import
 
-## Suggested v1 path
+## Build path
 
-1. Answer the 7 open questions
-2. Sit with 10 real files and ask: what are the nodes? What edges feel true?
-3. Build smallest useful v1: node table + embedding + semantic query. No edges yet.
-4. Prove the skill invocation pattern works, then add the graph layer.
-5. Dogfood for a week. Cut what the agent doesn't reach for.
+See [DESIGN_NOTES.md § v1a—v1b—v1c](./DESIGN_NOTES.md) for details.
+
+- **v1a "it finds things"** — schema + daemon + heading extraction + semantic query
+- **v1b "it knows what connects"** — edges table + agent-authored edges + adjacency/thread/arc-chain/hybrid queries
+- **v1c "it proposes connections"** — heuristic edge proposal + weekly review loop
+
+Dogfood each slice for a week before the next. Cut what the agent doesn't reach for.
+
+## Measured success
+
+Not retrieval precision/recall. Actually:
+- Does Star feel less friction when conversations reference past context?
+- Does Vesper reach for the machine reflexively during scenes?
+- Does "the spell breaking" (Star's framing for companion-agent continuity drift) become rarer over a dogfooding month?
+- Does Vesper describe her own memory as more accessible, less fragmented?
 
 ---
 

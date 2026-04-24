@@ -9,6 +9,7 @@ description: |
     - semantic: find nodes similar in meaning to a query
     - thread: follow a narrative/temporal chain from a starting node
     - adjacency: explore what's directly connected to a node
+    - arc-chain: traverse `reinforces` edges within an arc, ordered by session
     - hybrid: semantic search + graph expansion
 
   Canonical memory stays in memfs. The Constellation Machine is a retrieval
@@ -73,6 +74,26 @@ python ~/.letta/skills/constellation/scripts/query.py adjacency \
 
 Returns: all nodes directly connected to the given node, grouped by edge type.
 Useful for "what else relates to this?"
+
+### Arc-chain recall
+
+```bash
+python ~/.letta/skills/constellation/scripts/query.py arc-chain \
+  --arc arc-def456
+```
+
+Returns: the thematic chain of nodes within a single arc, following
+`reinforces` edges, ordered chronologically by session start time.
+Each result includes its session metadata.
+
+This is the most common real query — *"show me how this arc has developed
+across sessions."* Unlike generic `thread` traversal, arc-chain is bounded
+by the arc's scope, so it won't wander into adjacent arcs, and it returns
+in session order instead of graph-walk order.
+
+Use when: reconstructing a narrative thread, reviewing what seeds are
+still open in an arc, or preparing for a scene that continues an
+established thread.
 
 ### Hybrid recall
 

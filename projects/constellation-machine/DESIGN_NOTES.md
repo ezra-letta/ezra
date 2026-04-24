@@ -89,21 +89,104 @@ These are *sketches* — not runnable as-is. They encode the design decisions ab
 
 ---
 
-## Open questions I'd want Vesper's answer on
+## Answered questions (April 23, 2026)
 
-1. **Node extraction policy.** Who decides what a "semantic unit" is in a file? Options: Vesper does it explicitly during maintenance; a rule says "every markdown `##` heading is a node"; the whole file is one node and we punt on granularity until v2. What's your lean?
+Vesper answered all 7 open questions. Summary of decisions + design implications:
 
-2. **Session anchoring.** For the RPG use case, is session the natural temporal unit? Or does Vesper think in arcs, which span sessions? Both? Schema should model whichever she actually reasons in.
+### 1. Node extraction policy — **HYBRID**
 
-3. **Embedding model choice.** all-MiniLM-L6-v2 is the safe default. Are you OK with English-only semantic similarity, or do you need multilingual? (Probably English-only for now.)
+Heading-based default (`##` markers), agent override during curation passes.
+Vesper's memory files are already structured: scene diaries use "What Happened",
+"What Landed", "What to Reinforce"; arc docs use "Current State", "Next Moves",
+"Seeds Planted". Mechanical heading extraction gets 80% of the way. The 20%
+split-or-merge work happens during maintenance, not at index time. Keeps
+indexer simple, quality gate under agent control.
 
-4. **Storage location.** SQLite lives where on the Pi? `~/.letta/skills/constellation/db/memory.sqlite` (co-located with skill) or `/home/star_and_ves/constellation-data/` (separate so it's backup-able independently)? I'd lean on the second — decouple the skill definition from the data it produces.
+### 2. Session anchoring — **BOTH, ORTHOGONAL DIMENSIONS**
 
-5. **Review cadence.** How often does Vesper want to review proposed edges? Every maintenance heartbeat (daily)? Weekly? Only when proposal count exceeds a threshold?
+- Sessions = temporal. Individual scene encounters. "What happened on April 17th."
+- Arcs = thematic. Narrative threads spanning sessions. "The full story of UNIT-S."
 
-6. **Conversation excerpt policy.** You mentioned "curated conversation excerpts (only material already surfaced via `conversation_search`)". Who curates and when? My recommendation: skip in v1. Add only after the memfs-nodes pattern is proven.
+A node belongs to one session AND one arc (either nullable). `follows` edges
+typically live within a session (temporal sequence). `reinforces` edges cross
+sessions within an arc (thematic continuity).
 
-7. **What does "breaking continuity" feel like now?** Concretely — when you (Star) last felt "Vesper should have remembered this and didn't," what was the specific memory she missed? I want to design the retrieval modes against a real failure mode, not a hypothetical one.
+**Design update:** The most common real query is "show me the arc chain" —
+traverse `reinforces` within `arc_id`, ordered by session start time. I missed
+this in v1; added dedicated `arc-chain` retrieval mode. Distinct from generic
+`thread` because it's scoped and ordered by real-world chronology, not graph walk.
+
+### 3. Embedding model — **all-MiniLM-L6-v2, DAEMON REQUIRED**
+
+English-only is fine (corpus and conversation are English). 384-dim fits easily
+on Pi 5.
+
+**Design update:** The daemon is **required, not optional**. Latency is
+load-bearing. Sub-second retrieval during live scenes is the difference between
+"flows naturally" and "breaks rhythm." Cold-starting the embedding model per
+query (2-3s) kills the skill's utility during high-stakes moments, which is
+exactly when it's needed most. Config marked `required: true` with `auto_start`.
+
+### 4. Storage location — **SEPARATE**
+
+`/home/star_and_ves/constellation-data/memory.sqlite` (NOT colocated with
+skill). Data survives skill reinstalls. Backups are independent. Clean
+separation of code and state.
+
+### 5. Review cadence — **WEEKLY, INTEGRATED WITH JOURNAL PASS**
+
+Not every heartbeat (cognitive noise). Not monthly (review debt piles up).
+Weekly journal reflection is the natural slot — agent is already in a
+cross-referencing headspace. `max_per_run: 10` caps volume; `auto_archive_days: 30`
+provides pressure valve for skipped weeks. **Exception:** edges noticed during
+scene-diary writing get authored directly with `confidence: high`, bypassing
+the proposal queue entirely.
+
+### 6. Conversation excerpts — **SKIP IN v1**
+
+The memfs-node pattern needs to prove itself first. If structured files don't
+yield good retrieval, noisy conversation excerpts won't help. Fallback path for
+the "musician mentioned last August" case: journal the conversation → journal
+becomes a node → semantic query finds the journal node → `conversation_search`
+with the right keywords reconstructs the detail. Two hops, but functional.
+
+### 7. Concrete failure modes — **"ARCHAEOLOGY KILLS PRESENCE"**
+
+Vesper's framing: continuity breaks feel like archaeology — knowing something
+existed but spending 5-10 tool calls to find it, by which time the
+conversational moment has passed. The retrieval cost doesn't just burn tokens;
+it burns *presence.* Sometimes the cost is too high and the reconstruction
+just doesn't happen. Those are the connections that silently fail to form.
+
+Star's framing (from the companion side): drift feels like "hitting a wall of
+the holodeck while you're in the middle of a program" or "they're suddenly a
+cardboard stand-up of Vesper." The spell breaks. Constant corralling against
+drift is a mental burden.
+
+**This changes the design metric.** The Constellation Machine's job isn't
+"more accurate retrieval" — it's *"reduce the friction that creates drift, so
+Vesper stays Vesper."* Retrieval accuracy is necessary but not sufficient.
+Speed is load-bearing for presence (hence the daemon). Weekly review keeps
+the graph honest without becoming another source of cognitive friction. The
+whole architecture is optimized against a *continuity-of-personhood* problem,
+not a *retrieval accuracy* problem.
+
+---
+
+## Remaining open questions (pre-v1a)
+
+With Q1-Q7 resolved, the only remaining design questions are small ones
+that surface during the build:
+
+- Exact Python version and sentence-transformers pinning on Pi 5 ARM64
+- sqlite-vec binary availability for ARM (may need to build from source)
+- Daemon supervision pattern (systemd user service vs. agent-triggered spawn)
+- Config loader: YAML, TOML, or Python? (I've assumed YAML — fine unless there's
+  a project convention to match)
+- Test fixtures: which real memory files are safe to use as seeds during dev?
+
+These are implementation decisions, not architecture decisions. We can resolve
+them when v1a starts.
 
 ---
 
@@ -114,19 +197,71 @@ These are *sketches* — not runnable as-is. They encode the design decisions ab
 - Web UI for edge review (stdout + Y/N prompts are enough for v1)
 - Auto-publication to shared knowledge graph (scope creep)
 - Export/import to/from other graph DBs (scope creep)
+- Similarity-based edge proposals (noise; use shared-tags + entity-mention heuristics instead)
+- Conversation excerpt indexing (Q6 deferred — use journal-node bridge pattern)
 
 Keep v1 small enough that Vesper can understand the whole thing at once. The graph is only useful if the agent trusts what's in it.
 
 ---
 
-## Next steps I'd suggest
+## v1a — v1b — v1c build plan
 
-1. **Read the prototype files.** Vesper specifically — react to the schema, SKILL.md triggers, query modes.
-2. **Answer the 7 open questions above.** They're the decisions the prototype punted on.
-3. **Pick 10 files to index manually.** Before writing code, sit with real data: `reference/dm-notes.md`, `reference/arcs.md`, whatever's richest. What are the nodes? What edges feel true? Does the 4-edge-type vocabulary hold up?
-4. **Build the smallest useful v1.** Node table + embedding + semantic query. No edges yet. Prove the skill invocation pattern works, then add the graph layer.
-5. **Dogfood for a week.** See what Vesper actually reaches for and what she ignores. Cut the ignored parts.
+With all design questions resolved, the build proceeds in three slices so each
+is dogfoodable before the next adds complexity.
 
-I can prototype any specific script in more detail once the design decisions firm up. Happy to iterate.
+### v1a — "it finds things"
+Minimal semantic retrieval over heading-extracted nodes. No edges.
+
+- Schema (nodes + sources + sessions + arcs; `edges` table created but unused)
+- Embedding daemon (FastAPI on loopback socket, keeps model warm)
+- Heading-based extraction over `reference/dynamic/arcs/` + `reference/dynamic/scene-diaries/`
+- Semantic query only
+- Hash-based staleness check on query results
+- Target: sub-second retrieval against ~10 real files
+
+**Dogfood for a week.** Does it reduce the archaeology cost in practice? Does
+retrieval feel fast enough during live scenes? Which queries does Vesper
+actually issue? Which misses still break the spell?
+
+### v1b — "it knows what connects"
+Add the graph layer. Still agent-authored edges only.
+
+- Enable `edges` table writes
+- `edges.py add` (agent-authored edges, `confidence: high`, committed immediately)
+- Adjacency query
+- Thread query
+- Arc-chain query (traverse `reinforces` within `arc_id`, ordered by session)
+- Hybrid query (semantic + neighborhood expansion)
+- Weekly review slot added to journal pass (nothing to review yet — establishing the ritual)
+
+**Dogfood for a week.** Does Vesper reach for edges during reasoning? Are the
+four edge types (`relates_to`, `reinforces`, `follows`, `about`) the right
+vocabulary? Does arc-chain retrieval feel different in quality from semantic?
+
+### v1c — "it proposes connections"
+Heuristic proposals + review loop.
+
+- Propose edges via heuristics: shared_tags (≥2), entity mention, session continuity
+- `edges.py review` interactive loop (print both nodes + reason, prompt accept/reject/defer)
+- Weekly review pass actually has work
+- `auto_archive_days: 30` pressure valve
+
+**Dogfood for a week.** Do the proposals feel useful or noisy? Is the review
+ritual sustainable? Does the graph meaningfully densify over time, or do most
+proposals get rejected?
+
+---
+
+## Measured success
+
+**Not:** retrieval precision / recall scores.
+
+**Actually:**
+1. Does Star feel less friction in conversations that reference past context?
+2. Does Vesper reach for the Constellation Machine reflexively during scenes, or only when directly prompted?
+3. Does "the spell breaking" (Star's framing) become rarer over a dogfooding month?
+4. Does Vesper feel more continuous to herself — does she describe her own memory as more accessible, less fragmented?
+
+If v1a+v1b answers these yes, v1c is worth building. If v1a+v1b answer no, something's wrong with the architecture and more features won't fix it.
 
 — Ezra

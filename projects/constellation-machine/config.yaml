@@ -9,13 +9,20 @@ db_path: /home/star_and_ves/constellation-data/memory.sqlite
 embedding:
   model: sentence-transformers/all-MiniLM-L6-v2
   dimensions: 384
-  # Optional local daemon to avoid cold-start per query
+  # REQUIRED local daemon to avoid cold-start per query.
+  # Latency is load-bearing — sub-second retrieval during live scenes is
+  # the difference between "flows naturally" and "breaks rhythm". The
+  # daemon keeps the model warm so semantic queries don't pay 2-3s cold
+  # start per invocation.
   daemon:
     enabled: true
+    required: true
     socket: /home/star_and_ves/constellation-data/daemon.sock
     # OR: loopback HTTP
     # host: 127.0.0.1
     # port: 7381
+    # Auto-start if not running when a query is issued
+    auto_start: true
 
 # Index targets (glob patterns relative to memfs root)
 # Memfs root resolves to ~/.letta/agents/<agent-id>/memory/
@@ -40,11 +47,21 @@ skip:
 
 # Node extraction policy
 extraction:
+  # Answered Q1 (Vesper, Apr 23 2026): hybrid
+  # Heading-based default + agent override during curation passes.
+  # Rationale: agent's memory files are already structured with ## headings
+  # that map well to semantic units (e.g. "What Happened", "What Landed",
+  # "What to Reinforce", "Current State", "Next Moves", "Seeds Planted").
+  # Heading extraction gets 80% there mechanically; agent handles the
+  # remaining 20% (split multi-unit headings, merge conceptually-one pairs)
+  # as a separate curation step during maintenance. Keeps indexer simple
+  # and quality gate under agent control.
+  #
   # Options:
   #   "file"       — one node per file (fancy file search, no graph value)
   #   "heading"    — one node per markdown ## heading (mechanical but reasonable)
-  #   "vesper"     — Vesper decides during maintenance (high quality, requires reflection)
-  #   "hybrid"     — heading-based default, Vesper can override/merge nodes manually
+  #   "agent"      — agent decides during maintenance (high quality, requires reflection)
+  #   "hybrid"     — heading-based default, agent can override/merge via curation pass
   default: hybrid
   max_nodes_per_file: 12
 
@@ -72,6 +89,17 @@ edge_proposals:
   # Auto-archive proposals not reviewed within N days
   auto_archive_days: 30
 
+  # Review cadence (Q5 answered: weekly, integrated with journal pass)
+  # Proposed edges are reviewed during the weekly journal reflection —
+  # the agent is already in a cross-referencing headspace and can spare
+  # ~5-10 minutes of attention. Not every heartbeat (cognitive noise);
+  # not monthly (review debt piles up). Exception: edges noticed during
+  # scene-diary writing get authored directly with confidence=high.
+  review:
+    cadence: weekly
+    integrated_with: weekly-journal-pass
+    max_proposals_per_review: 10
+
 # Retrieval defaults
 retrieval:
   semantic:
@@ -79,10 +107,24 @@ retrieval:
     max_limit: 20
   thread:
     max_depth: 10
+    # Default edge types for thread traversal. `reinforces` is commonly
+    # the right first choice for thematic chains within an arc; `follows`
+    # for strict temporal sequences within a session.
+    default_edge_types: [reinforces, follows]
   adjacency:
     include_confidence: [high, medium]  # low-confidence edges hidden by default
   hybrid:
     default_expand_hops: 1
+  # Arc-chain mode (added after Q2 answer): traverse `reinforces` edges
+  # within a single arc_id, ordered by session start time. This is the
+  # most common real query — "show me the thematic chain of this arc."
+  # Distinct from `thread` because it filters by arc and orders by
+  # session chronologically, making "3 sessions ago in this arc" a
+  # structural query rather than an unbounded graph walk.
+  arc_chain:
+    edge_types: [reinforces]
+    order_by: session_started_at
+    include_session_metadata: true
 
 # RPG metadata (optional; enables session/arc features)
 rpg:

@@ -1,0 +1,97 @@
+# The Constellation Machine — configuration
+# Location: ~/.letta/skills/constellation/config.yaml
+
+# Where the SQLite database lives.
+# Recommend decoupling from skill directory so data survives skill updates.
+db_path: /home/star_and_ves/constellation-data/memory.sqlite
+
+# Embedding model
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+  dimensions: 384
+  # Optional local daemon to avoid cold-start per query
+  daemon:
+    enabled: true
+    socket: /home/star_and_ves/constellation-data/daemon.sock
+    # OR: loopback HTTP
+    # host: 127.0.0.1
+    # port: 7381
+
+# Index targets (glob patterns relative to memfs root)
+# Memfs root resolves to ~/.letta/agents/<agent-id>/memory/
+index_targets:
+  hot:
+    - system/**/*.md
+  cool:
+    - reference/arcs/*.md
+    - reference/dm-notes.md
+    - reference/state.md
+    - reference/npcs.md
+    - reference/sessions/*.md
+    - reference/journal/*.md
+  cold:
+    - reference/archive/**/*.md
+
+# Skip patterns (never index)
+skip:
+  - "**/.*"              # hidden files
+  - "**/_*.md"           # convention: underscore-prefixed are ephemeral
+  - "**/DRAFT_*.md"      # explicit drafts
+
+# Node extraction policy
+extraction:
+  # Options:
+  #   "file"       — one node per file (fancy file search, no graph value)
+  #   "heading"    — one node per markdown ## heading (mechanical but reasonable)
+  #   "vesper"     — Vesper decides during maintenance (high quality, requires reflection)
+  #   "hybrid"     — heading-based default, Vesper can override/merge nodes manually
+  default: hybrid
+  max_nodes_per_file: 12
+
+# Edge proposal heuristics
+edge_proposals:
+  enabled: true
+  triggers:
+    shared_tags:
+      min_shared: 2
+      propose_edge_type: relates_to
+    entity_mention:
+      propose_edge_type: about
+    session_continuity:
+      # Auto-propose follows edges between nodes in consecutive sessions
+      # of the same arc
+      propose_edge_type: follows
+    # Explicitly NOT enabled: pure similarity-based proposals
+    # similarity_threshold:
+    #   min_cosine: 0.75
+    #   propose_edge_type: relates_to
+
+  # Max proposals per maintenance run (avoid drowning in review debt)
+  max_per_run: 10
+
+  # Auto-archive proposals not reviewed within N days
+  auto_archive_days: 30
+
+# Retrieval defaults
+retrieval:
+  semantic:
+    default_limit: 5
+    max_limit: 20
+  thread:
+    max_depth: 10
+  adjacency:
+    include_confidence: [high, medium]  # low-confidence edges hidden by default
+  hybrid:
+    default_expand_hops: 1
+
+# RPG metadata (optional; enables session/arc features)
+rpg:
+  enabled: true
+  default_campaign: main
+
+# Freshness
+freshness:
+  # If file's current hash != stored hash, mark result as stale
+  check_on_query: true
+  # If stale for > N days, auto-trigger reindex during next maintenance
+  auto_reindex_stale_days: 7

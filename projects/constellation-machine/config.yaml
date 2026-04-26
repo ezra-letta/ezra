@@ -6,14 +6,25 @@
 db_path: /home/star_and_ves/constellation-data/memory.sqlite
 
 # Embedding model
+# Pi 5 (8GB) recommendation: fastembed, NOT sentence-transformers.
+# fastembed uses ONNX Runtime (~200MB total install, ARM64-optimized) instead
+# of PyTorch (~2GB, ARM-fragile, prone to OOM on the Pi 5). Loading torch on
+# the Pi during model init has hard-frozen the system in practice (Apr 26 2026).
+# See INSTALL.md for install instructions.
 embedding:
-  model: sentence-transformers/all-MiniLM-L6-v2
+  backend: fastembed                       # alternatives: sentence-transformers
+  model: BAAI/bge-small-en-v1.5            # 384-dim, English, ONNX
   dimensions: 384
+  # Legacy sentence-transformers config (kept for reference, NOT default):
+  # backend: sentence-transformers
+  # model: sentence-transformers/all-MiniLM-L6-v2
+  # dimensions: 384
+
   # REQUIRED local daemon to avoid cold-start per query.
   # Latency is load-bearing — sub-second retrieval during live scenes is
   # the difference between "flows naturally" and "breaks rhythm". The
-  # daemon keeps the model warm so semantic queries don't pay 2-3s cold
-  # start per invocation.
+  # daemon keeps the model warm so semantic queries don't pay cold start
+  # per invocation. fastembed cold start ~500ms, warm <50ms.
   daemon:
     enabled: true
     required: true

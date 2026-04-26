@@ -39,8 +39,12 @@ A skill scaffolding for **meaning-based retrieval with graph traversal** over a 
 ## Recommended stack
 
 - **SQLite + sqlite-vec** on Pi 5 (8GB) — local, no cloud dependency
-- **Embedding model:** sentence-transformers/all-MiniLM-L6-v2 (384-dim, English-only)
+- **Embedding backend:** `fastembed` (ONNX Runtime, ARM64-optimized, ~200MB install)
+  - Model: `BAAI/bge-small-en-v1.5` (384-dim, English-only, cosine similarity)
+  - **Note:** `sentence-transformers` + PyTorch is NOT recommended on Pi 5 — has hard-frozen the device in practice (Apr 26 2026). PyTorch ARM64 wheels are ~2GB and load-time RAM spike OOM-kills the system. Use fastembed.
 - **Integration:** Skill at `~/.letta/skills/constellation/`, called via Bash from within the agent's context
+
+See [`INSTALL.md`](./INSTALL.md) for Pi-specific install instructions.
 
 ## Design questions (resolved Apr 23, 2026)
 

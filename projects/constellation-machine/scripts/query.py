@@ -19,7 +19,8 @@ from pathlib import Path
 
 # Placeholder imports — actual implementation would use these
 # import sqlite_vec
-# from sentence_transformers import SentenceTransformer
+# from fastembed import TextEmbedding   # default: BAAI/bge-small-en-v1.5
+# # legacy: from sentence_transformers import SentenceTransformer
 # import yaml
 
 
@@ -41,12 +42,22 @@ def connect(db_path: Path) -> sqlite3.Connection:
 def embed_text(text: str, daemon_socket: Path | None) -> list[float]:
     """
     Embed text. If daemon is configured, talk to it via socket; otherwise
-    load model inline (slow, ~2-3s cold start on Pi 5).
+    load model inline (slow on cold start; fastembed ~500ms, sentence-transformers ~2-3s).
+
+    Default backend: fastembed (ONNX, ARM-friendly).
     """
     # if daemon_socket and daemon_socket.exists():
     #     return talk_to_daemon(daemon_socket, text)
-    # model = SentenceTransformer("all-MiniLM-L6-v2")
-    # return model.encode(text).tolist()
+    #
+    # # fastembed (default, recommended for Pi):
+    # from fastembed import TextEmbedding
+    # model = TextEmbedding("BAAI/bge-small-en-v1.5")
+    # return list(next(model.embed([text])))
+    #
+    # # legacy sentence-transformers (NOT recommended on Pi 5 — see INSTALL.md):
+    # # from sentence_transformers import SentenceTransformer
+    # # model = SentenceTransformer("all-MiniLM-L6-v2")
+    # # return model.encode(text).tolist()
     raise NotImplementedError("embed stub")
 
 

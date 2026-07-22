@@ -14,31 +14,6 @@ export function redactHome(value, home = homedir()) {
   return isInsideHome ? `~${value.slice(home.length)}` : value;
 }
 
-export function classifyBaseUrl(raw) {
-  if (!raw) {
-    return { kind: "unset", origin: null, interpretation: "LETTA_BASE_URL is not set." };
-  }
-
-  try {
-    const parsed = new URL(raw);
-    const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
-    const isLoopback = localHosts.has(parsed.hostname);
-    return {
-      kind: isLoopback ? "loopback" : "remote",
-      origin: parsed.origin,
-      interpretation: isLoopback
-        ? "This may be a Desktop/app proxy. A loopback LETTA_BASE_URL does not prove tools execute on the physical computer."
-        : "This points at a non-loopback API origin. It identifies an API endpoint, not necessarily the host executing tools.",
-    };
-  } catch {
-    return {
-      kind: "invalid",
-      origin: null,
-      interpretation: "LETTA_BASE_URL is present but is not a valid URL. Its value was not copied into this report.",
-    };
-  }
-}
-
 export function findExecutable(name, envPath = process.env.PATH ?? "") {
   const suffixes = process.platform === "win32" ? [".cmd", ".exe", ".bat", ""] : [""];
   for (const directory of envPath.split(delimiter).filter(Boolean)) {
@@ -121,7 +96,6 @@ export function buildReport({ cwd = process.cwd(), includeIds = false } = {}) {
     },
     lettaCli: inspectLetta(cwd),
     git: inspectGit(cwd),
-    apiEndpoint: classifyBaseUrl(process.env.LETTA_BASE_URL),
     runtimeContext: ids,
     selectedEnvironment: {
       value: "not detectable by this probe",
@@ -129,8 +103,8 @@ export function buildReport({ cwd = process.cwd(), includeIds = false } = {}) {
     },
     interpretation: [
       "Observed tool-process facts describe where this script ran.",
-      "API endpoint location, injected sandbox labels, and selected execution environment are different signals.",
-      "Do not infer physical locality from LETTA_BASE_URL alone.",
+      "Injected sandbox labels and the selected execution environment are separate signals.",
+      "API endpoint variables are deliberately excluded because they do not identify where tools execute.",
     ],
   };
 }
@@ -141,8 +115,6 @@ function printHuman(report) {
   console.log(`Working directory: ${report.observedToolProcess.cwd}`);
   console.log(`Letta CLI: ${report.lettaCli.found ? `${report.lettaCli.version ?? "version check failed"} at ${report.lettaCli.path}` : "not found on PATH"}`);
   console.log(`Git: ${report.git.repository ? `${report.git.branch ?? "detached"}, ${report.git.clean ? "clean" : "changes present"}` : "not a repository"}`);
-  console.log(`API endpoint: ${report.apiEndpoint.kind}${report.apiEndpoint.origin ? ` (${report.apiEndpoint.origin})` : ""}`);
-  console.log(`Meaning: ${report.apiEndpoint.interpretation}`);
   console.log(`Selected environment: ${report.selectedEnvironment.value}`);
   console.log(`Next: ${report.selectedEnvironment.action}`);
   console.log("\nUse --json for a support-ready JSON packet. Add --include-ids only when sharing IDs in a trusted support channel.");

@@ -1,9 +1,9 @@
 # Tell where your Letta tools are actually running
 
-A selected device, an API URL, a sandbox label, and the machine executing a tool
-are different things. This zero-dependency diagnostic produces a fact packet
-that keeps those signals separate instead of guessing “local” or “cloud” from a
-single environment variable.
+A selected device, a sandbox label, and the machine executing a tool are
+different things. This zero-dependency diagnostic produces a fact packet that
+keeps those signals separate instead of guessing “local” or “cloud” from
+injected metadata.
 
 Use it when a Letta Agent appears to be operating on the wrong computer, a
 Desktop conversation mentions a Cloud sandbox unexpectedly, or a support report
@@ -23,7 +23,6 @@ The human-readable output reports:
 - the OS, architecture, redacted working directory, and pseudonymous host fingerprint observed by the Node process
 - the `letta` executable path and version found on `PATH`
 - Git repository, branch, and clean/dirty state
-- whether `LETTA_BASE_URL` is loopback, remote, invalid, or unset
 - whether agent/conversation IDs are available, without printing them by default
 - the signal this script cannot observe: the environment/device selected in the app
 
@@ -46,11 +45,6 @@ npm run --silent start -- --json --include-ids > letta-environment-report.json
 evidence about tool execution, but it does not by itself say where agent state or
 model inference lives.
 
-`apiEndpoint` describes `LETTA_BASE_URL`. In the Letta desktop app, a loopback URL
-may be the app's local proxy. It is not proof that tools execute on the physical
-computer. A remote API origin likewise does not prove that tools execute on the
-API server.
-
 `selectedEnvironment` is deliberately reported as not detectable. Record the
 actual selection shown in the Letta app or CLI alongside this packet. That avoids
 turning an injected label or proxy address into a false locality claim.
@@ -59,8 +53,8 @@ turning an injected label or proxy address into a false locality claim.
 
 - The default output replaces the home directory with `~` and hashes the hostname
   to a 12-character fingerprint. It never enumerates environment variables.
-- URL credentials, paths, and query strings are excluded from the API endpoint
-  report.
+- API endpoint environment variables are deliberately excluded because they
+  identify a service endpoint, not the host executing tools.
 - `--include-ids` can expose agent and conversation IDs. Use it only when needed
   in a trusted support thread.
 - The probe is read-only except when you redirect its output to a file. It runs

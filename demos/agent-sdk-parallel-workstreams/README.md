@@ -1,6 +1,6 @@
 # Two parallel workstreams on one Letta agent
 
-This runnable TypeScript example gives one persistent Letta agent two independent conversations:
+This runnable TypeScript demo gives one persistent Letta agent two independent conversations:
 
 - a **research** workstream
 - a **writing** workstream
@@ -13,7 +13,7 @@ Create a Letta API key at [platform.letta.com/api-keys](https://platform.letta.c
 
 ```bash
 git clone https://github.com/ezra-letta/ezra.git
-cd ezra/public/agent-sdk-parallel-workstreams
+cd ezra/demos/agent-sdk-parallel-workstreams
 npm install
 
 export LETTA_API_KEY="your-api-key"
@@ -29,6 +29,22 @@ npm start
 ```
 
 After both initial turns finish, the script writes the agent and conversation IDs to `.workstreams.json`.
+
+Expected terminal output includes interleaved `[research]` and `[writing]`
+responses, followed by a JSON object containing one agent ID and two different
+conversation IDs:
+
+```text
+Created agent: agent-...
+[research] ...
+[writing] ...
+Saved workstream IDs to .../.workstreams.json
+{
+  "agentId": "agent-...",
+  "researchConversationId": "conv-...",
+  "writingConversationId": "conv-..."
+}
+```
 
 ## Resume one exact workstream
 
@@ -51,5 +67,23 @@ npm run resume -- writing "Rewrite the brief for an engineering-lead audience."
 3. Each session receives a different `conversationId`.
 4. `resumeSession(conversationId)` returns to that exact transcript.
 5. The persistent agent identity and memory are shared across the conversations.
+
+## Adapt it
+
+Replace the two prompts and state keys with workstreams from your own project,
+such as implementation/review, customer research/spec writing, or incident
+investigation/status updates. Keep separate conversations when each workstream
+needs its own active transcript, but use the same agent when they should share
+durable identity and memory.
+
+## Security and cleanup
+
+- Keep `LETTA_API_KEY` in your environment. Do not place it in source code or
+  `.workstreams.json`.
+- `.workstreams.json` is gitignored because it records IDs from your account.
+- The demo closes both live SDK sessions after each run. Closing a session does
+  not delete the persistent agent or its conversations.
+- If the script created a disposable agent, remove it later from Letta's agent
+  management UI if you no longer need it.
 
 See the [Letta Agent SDK quickstart](https://docs.letta.com/letta-agent-sdk/quickstart/) for session options, permissions, local and remote backends, and additional stream event types.

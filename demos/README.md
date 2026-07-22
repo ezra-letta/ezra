@@ -12,6 +12,7 @@ Runnable examples for building with Letta. Each folder includes:
 
 | Demo | Surface | What it demonstrates | Time |
 | --- | --- | --- | --- |
+| [Execution-environment truth probe](execution-environment-truth-probe/) | Letta Agent / Letta Code diagnostic | Separate observed tool-host facts from API endpoints and selected-device claims | 5–10 minutes |
 | [Parallel Agent SDK workstreams](agent-sdk-parallel-workstreams/) | Letta Agent SDK | Two concurrent conversations on one persistent agent, plus exact-thread resume | 10–15 minutes |
 
 ## Before you run a demo

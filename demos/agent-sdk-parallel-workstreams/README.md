@@ -80,6 +80,10 @@ durable identity and memory.
 
 - Keep `LETTA_API_KEY` in your environment. Do not place it in source code or
   `.workstreams.json`.
+- Run `npm audit` and assess the current Agent SDK dependency tree before using
+  this code in production. Do not silence transitive native-library advisories
+  with an untested package override; an incompatible `sharp` override can stop
+  the bundled Letta Code runtime from starting.
 - `.workstreams.json` is gitignored because it records IDs from your account.
 - The demo closes both live SDK sessions after each run. Closing a session does
   not delete the persistent agent or its conversations.

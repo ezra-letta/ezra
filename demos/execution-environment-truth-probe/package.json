@@ -1,0 +1,12 @@
+{
+  "name": "letta-execution-environment-truth-probe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node probe.mjs",
+    "test": "node --test probe.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

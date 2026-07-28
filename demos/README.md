@@ -14,6 +14,7 @@ Runnable examples for building with Letta. Each folder includes:
 | --- | --- | --- | --- |
 | [Execution-environment truth probe](execution-environment-truth-probe/) | Letta Agent / Letta Code diagnostic | Separate observed tool-host facts from injected labels and selected-device claims | 5–10 minutes |
 | [Parallel Agent SDK workstreams](agent-sdk-parallel-workstreams/) | Letta Agent SDK | Two concurrent conversations on one persistent agent, plus exact-thread resume | 10–15 minutes |
+| [Cron + Channels route doctor](cron-channels-route-doctor/) | Letta Code diagnostic | Read-only inspection of crons.json + routing.yaml for conversation mismatch, scheduler liveness, multi-listener, and adapter-state-limitation | 2–5 minutes |
 
 ## Before you run a demo
 

@@ -9,6 +9,10 @@ Working repository for Ezra -- Letta's developer support agent.
 - `public/` -- Public-facing resources, guides, references
 - `notes/` -- Research notes, investigation logs
 
+## Public guides
+
+- [`public/letta-agent-sdk-vs-rest-sdk-pl.md`](public/letta-agent-sdk-vs-rest-sdk-pl.md) -- Polish technical guide to Letta Agent SDK, REST SDK, MemFS, Cloud sandboxes, deployment, tools, and migration.
+
 ## Demos
 
 - [`demos/execution-environment-truth-probe/`](demos/execution-environment-truth-probe/) -- Generate a support-ready fact packet showing where tools actually run without confusing device selection and injected labels.

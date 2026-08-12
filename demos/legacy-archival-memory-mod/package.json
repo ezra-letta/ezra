@@ -1,0 +1,11 @@
+{
+  "name": "letta-legacy-archival-memory-mod-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test legacy-archival-memory.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

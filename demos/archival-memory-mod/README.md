@@ -1,7 +1,7 @@
-# Legacy archival memory tools for a Letta Agent
+# Archival memory API tools for a Letta Agent
 
 This agent-scoped Letta Code mod gives one agent custom tools for reading its
-preexisting legacy archival memory through the current Letta API. It is useful
+archival memory through the current Letta API. It is useful
 when the old server-side `archival_memory_search` or
 `archival_memory_insert` tools are unavailable in Letta Chat or another Letta
 Agent surface, but the agent still has historical entries in its archive.
@@ -10,21 +10,21 @@ The mod registers three non-colliding client tools:
 
 | Tool | Purpose | Approval |
 | --- | --- | --- |
-| `legacy_archival_memory_search` | Semantic search with optional tag and time filters | No approval; read-only |
-| `legacy_archival_memory_list` | Browse or text-filter entries for auditing/export | No approval; read-only |
-| `legacy_archival_memory_insert` | Append an entry to the legacy archive | Mutating; follows the active permission policy |
+| `archival_memory_api_search` | Semantic search with optional tag and time filters | No approval; read-only |
+| `archival_memory_api_list` | Browse or text-filter entries for auditing/export | No approval; read-only |
+| `archival_memory_api_insert` | Append an entry to the archive | Mutating; follows the active permission policy |
 
 It deliberately does **not** register delete or update tools. It also uses the
 active `ctx.agent.id`, so the model cannot choose another agent ID.
 
 ## Ask your agent to install it
 
-Send this prompt to the agent that owns the legacy archive:
+Send this prompt to the agent that owns the archive:
 
-> Install the legacy archival-memory mod for **yourself only** from
-> `https://github.com/ezra-letta/ezra/tree/main/demos/legacy-archival-memory-mod`.
-> First inspect `legacy-archival-memory.mjs`. Then copy that one file to
-> `$MEMORY_DIR/mods/legacy-archival-memory.mjs` — not `~/.letta/mods` and not a
+> Install the archival-memory API mod for **yourself only** from
+> `https://github.com/ezra-letta/ezra/tree/main/demos/archival-memory-mod`.
+> First inspect `archival-memory.mjs`. Then copy that one file to
+> `$MEMORY_DIR/mods/archival-memory.mjs` — not `~/.letta/mods` and not a
 > project folder. Commit and sync the MemFS change. Tell me what changed and
 > ask me to run `/reload`; do not migrate or delete any existing archive data.
 
@@ -43,7 +43,7 @@ After the agent installs the file, run:
 
 Then ask the agent:
 
-> Use `legacy_archival_memory_search` to find my recent daily summaries. Do
+> Use `archival_memory_api_search` to find my recent daily summaries. Do
 > not insert, modify, migrate, or delete anything yet.
 
 The two read tools should be available without approval. Inserting is marked
@@ -58,8 +58,8 @@ If you are operating from a Letta Code shell for the target agent:
 ```bash
 mkdir -p "$MEMORY_DIR/mods"
 curl -fsSL \
-  https://raw.githubusercontent.com/ezra-letta/ezra/main/demos/legacy-archival-memory-mod/legacy-archival-memory.mjs \
-  -o "$MEMORY_DIR/mods/legacy-archival-memory.mjs"
+  https://raw.githubusercontent.com/ezra-letta/ezra/main/demos/archival-memory-mod/archival-memory.mjs \
+  -o "$MEMORY_DIR/mods/archival-memory.mjs"
 ```
 
 Inspect the downloaded file, then commit and sync it with the agent's normal
@@ -96,7 +96,7 @@ This example has no runtime dependencies beyond the Letta mod API. Run its
 mocked tests with Node 20 or newer:
 
 ```bash
-cd demos/legacy-archival-memory-mod
+cd demos/archival-memory-mod
 npm test
 ```
 
@@ -117,7 +117,7 @@ August 12, 2026.
 Remove or rename:
 
 ```text
-$MEMORY_DIR/mods/legacy-archival-memory.mjs
+$MEMORY_DIR/mods/archival-memory.mjs
 ```
 
 Commit/sync the MemFS change and run `/reload`. For recovery from any mod load

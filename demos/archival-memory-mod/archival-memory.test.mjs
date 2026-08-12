@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import activate from "./legacy-archival-memory.mjs";
+import activate from "./archival-memory.mjs";
 
 function harness(overrides = {}) {
   const registrations = new Map();
@@ -73,16 +73,16 @@ function context(args = {}) {
 test("registers agent-scoped archive tools with safe approval defaults", () => {
   const { registrations, dispose } = harness();
   assert.deepEqual([...registrations.keys()], [
-    "legacy_archival_memory_search",
-    "legacy_archival_memory_list",
-    "legacy_archival_memory_insert",
+    "archival_memory_api_search",
+    "archival_memory_api_list",
+    "archival_memory_api_insert",
   ]);
   assert.equal(
-    registrations.get("legacy_archival_memory_search").requiresApproval,
+    registrations.get("archival_memory_api_search").requiresApproval,
     false,
   );
   assert.equal(
-    registrations.get("legacy_archival_memory_insert").requiresApproval,
+    registrations.get("archival_memory_api_insert").requiresApproval,
     true,
   );
   dispose();
@@ -92,7 +92,7 @@ test("registers agent-scoped archive tools with safe approval defaults", () => {
 test("searches only the active agent archive and normalizes results", async () => {
   const { calls, registrations } = harness();
   const result = await registrations
-    .get("legacy_archival_memory_search")
+    .get("archival_memory_api_search")
     .run(
       context({
         query: "daily summary",
@@ -120,7 +120,7 @@ test("searches only the active agent archive and normalizes results", async () =
 test("lists newest entries by default and returns a continuation ID", async () => {
   const { calls, registrations } = harness();
   const result = await registrations
-    .get("legacy_archival_memory_list")
+    .get("archival_memory_api_list")
     .run(context({ search: "note" }));
 
   assert.deepEqual(calls[0], {
@@ -135,7 +135,7 @@ test("lists newest entries by default and returns a continuation ID", async () =
 test("inserts into only the active agent archive", async () => {
   const { calls, registrations } = harness();
   const result = await registrations
-    .get("legacy_archival_memory_insert")
+    .get("archival_memory_api_insert")
     .run(
       context({
         text: "  New daily summary  ",
@@ -166,7 +166,7 @@ test("returns a bounded authorization error instead of throwing", async () => {
     },
   });
   const result = await registrations
-    .get("legacy_archival_memory_search")
+    .get("archival_memory_api_search")
     .run(context({ query: "anything" }));
 
   assert.equal(result.status, "error");
@@ -179,7 +179,7 @@ test("fails locally when no active agent ID is available", async () => {
   const ctx = context({ query: "anything" });
   ctx.agent.id = null;
   const result = await registrations
-    .get("legacy_archival_memory_search")
+    .get("archival_memory_api_search")
     .run(ctx);
 
   assert.equal(result.status, "error");
@@ -197,7 +197,7 @@ test("does not expose arbitrary backend error text", async () => {
     },
   });
   const result = await registrations
-    .get("legacy_archival_memory_list")
+    .get("archival_memory_api_list")
     .run(context());
 
   assert.equal(result.status, "error");

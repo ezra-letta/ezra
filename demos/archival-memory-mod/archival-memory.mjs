@@ -60,7 +60,7 @@ function apiFailure(error) {
     return {
       status: "error",
       content:
-        "The archival-memory endpoint or this agent's archive was not found. Confirm this is the original Cloud agent and that its legacy archive still exists.",
+        "The archival-memory endpoint or this agent's archive was not found. Confirm this is the original Cloud agent and that its archive still exists.",
     };
   }
   if (status === 429) {
@@ -100,9 +100,9 @@ export default function activate(letta) {
 
   disposers.push(
     letta.tools.register({
-      name: "legacy_archival_memory_search",
+      name: "archival_memory_api_search",
       description:
-        "Semantically search this agent's preexisting legacy archival memory. Use this for facts, summaries, or records that were stored with the old archival_memory_insert tool rather than in MemFS.",
+        "Semantically search this agent's archival memory through the Letta API. Use this for facts, summaries, or records stored in the agent's archive rather than in MemFS.",
       parameters: {
         type: "object",
         properties: {
@@ -185,9 +185,9 @@ export default function activate(letta) {
 
   disposers.push(
     letta.tools.register({
-      name: "legacy_archival_memory_list",
+      name: "archival_memory_api_list",
       description:
-        "List or text-filter this agent's legacy archival-memory entries. Use this to browse, audit, or progressively export old entries when semantic search is not enough.",
+        "List or text-filter this agent's archival-memory entries through the Letta API. Use this to browse, audit, or progressively export entries when semantic search is not enough.",
       parameters: {
         type: "object",
         properties: {
@@ -268,9 +268,9 @@ export default function activate(letta) {
 
   disposers.push(
     letta.tools.register({
-      name: "legacy_archival_memory_insert",
+      name: "archival_memory_api_insert",
       description:
-        "Append a new entry to this agent's legacy archival memory. Prefer MemFS for new long-term memory unless the user explicitly wants to continue a legacy archival workflow.",
+        "Append a new entry to this agent's archival memory through the Letta API. Prefer MemFS for new Letta Agent memory unless the user explicitly wants to continue using the archive.",
       parameters: {
         type: "object",
         properties: {

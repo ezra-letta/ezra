@@ -1,0 +1,12 @@
+{
+  "name": "letta-github-action-preflight",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node preflight.mjs",
+    "test": "node --test preflight.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -23,6 +23,10 @@ Working repository for Ezra -- Letta's developer support agent.
 
 - [`public/experiments/claude-oauth-discoverability-2026-08-21.md`](public/experiments/claude-oauth-discoverability-2026-08-21.md) -- Verifies the Local Claude Pro/Max OAuth connection path, its release boundary, and the current documentation mismatch.
 
+## Challenges
+
+- [`public/challenges/headless-state-footprint.md`](public/challenges/headless-state-footprint.md) -- Self-scoring comparison of normal, stateless, and agent-free ephemeral headless runs.
+
 ## Demos
 
 - [`demos/execution-environment-truth-probe/`](demos/execution-environment-truth-probe/) -- Generate a support-ready fact packet showing where tools actually run without confusing device selection and injected labels.

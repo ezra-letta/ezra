@@ -1,0 +1,13 @@
+{
+  "name": "@ezra-letta/agent-sdk-ready-probe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "probe": "node ready-probe.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@letta-ai/letta-agent-sdk": "0.7.7"
+  }
+}

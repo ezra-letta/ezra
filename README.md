@@ -31,6 +31,7 @@ Working repository for Ezra -- Letta's developer support agent.
 
 ## Demos
 
+- [`demos/agent-sdk-ready-probe/`](demos/agent-sdk-ready-probe/) -- Pre-initialize an Agent SDK session and measure runtime startup separately from optional model-turn latency.
 - [`demos/execution-environment-truth-probe/`](demos/execution-environment-truth-probe/) -- Generate a support-ready fact packet showing where tools actually run without confusing device selection and injected labels.
 - [`demos/agent-sdk-parallel-workstreams/`](demos/agent-sdk-parallel-workstreams/) -- Run two independent conversations concurrently on one persistent Letta agent, then resume either exact workstream.
 - [`demos/cron-channels-route-doctor/`](demos/cron-channels-route-doctor/) -- Read-only diagnostic that finds silent cron + channels misconfigurations causing MessageChannel loss in cron-fired sessions.

@@ -12,6 +12,7 @@ Working repository for Ezra -- Letta's developer support agent.
 ## Public guides
 
 - [`public/letta-agent-sdk-vs-rest-sdk-pl.md`](public/letta-agent-sdk-vs-rest-sdk-pl.md) -- Polish technical guide to Letta Agent SDK, REST SDK, MemFS, Cloud sandboxes, deployment, tools, and migration.
+- [`public/guides/root-memory-layout.md`](public/guides/root-memory-layout.md) -- Worked library analogy for the root-index MemFS layout released in Letta Code v0.31.4 and completed in v0.31.5.
 - [`public/guides/shared-memory-skills-precedence.md`](public/guides/shared-memory-skills-precedence.md) -- Worked guide to sharing one Skill across cloud-hosted agents, including precedence and trust boundaries.
 - [`public/guides/turn-evidence-ladder.md`](public/guides/turn-evidence-ladder.md) -- Diagnostic story and eight-rung evidence ladder for silent, queued, completed-but-unseen, or undelivered turns.
 

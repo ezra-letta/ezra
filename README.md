@@ -20,6 +20,7 @@ Working repository for Ezra -- Letta's developer support agent.
 
 - [`public/field-notes/agent-created-pr-parent-visibility.md`](public/field-notes/agent-created-pr-parent-visibility.md) -- Source trace showing how pull requests opened by Agent subagents are surfaced on the launching parent conversation.
 - [`public/field-notes/noninteractive-agent-secrets.md`](public/field-notes/noninteractive-agent-secrets.md) -- Safe environment/stdin patterns for the scriptable `letta secret` command added in v0.30.32.
+- [`public/field-notes/user-approved-agent-feedback.md`](public/field-notes/user-approved-agent-feedback.md) -- Consent and minimal-payload boundaries for the agent-callable feedback path released in v0.31.6.
 
 ## Experiments
 

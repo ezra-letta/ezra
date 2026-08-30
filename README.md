@@ -26,6 +26,7 @@ Working repository for Ezra -- Letta's developer support agent.
 
 - [`public/experiments/claude-oauth-discoverability-2026-08-21.md`](public/experiments/claude-oauth-discoverability-2026-08-21.md) -- Verifies the Local Claude Pro/Max OAuth connection path, its release boundary, and the current documentation mismatch.
 - [`public/experiments/interrupt-is-not-stop-2026-08-26.md`](public/experiments/interrupt-is-not-stop-2026-08-26.md) -- Tests the difference between interrupting a turn, interrupting a `TaskOutput` wait, stopping a task, and sending Ctrl-C to an exec session.
+- [`public/experiments/reflection-model-circuit-breaker-2026-08-30.md`](public/experiments/reflection-model-circuit-breaker-2026-08-30.md) -- Fault-injection trace of how v0.31.6 pauses automatic reflection after deterministic model/provider configuration failures while preserving manual recovery.
 
 ## Challenges
 

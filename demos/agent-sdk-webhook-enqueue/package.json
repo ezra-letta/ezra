@@ -1,0 +1,13 @@
+{
+  "name": "@ezra-letta/agent-sdk-webhook-enqueue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "example": "node example.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@letta-ai/letta-agent-sdk": "0.8.0"
+  }
+}

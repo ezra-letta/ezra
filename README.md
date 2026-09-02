@@ -32,6 +32,7 @@ Working repository for Ezra -- Letta's developer support agent.
 ## Challenges
 
 - [`public/challenges/headless-state-footprint.md`](public/challenges/headless-state-footprint.md) -- Self-scoring comparison of normal, stateless, and agent-free ephemeral headless runs.
+- [`public/challenges/subagent-computer-routing.md`](public/challenges/subagent-computer-routing.md) -- Six routing cards for deciding when an Agent subagent should stay on the current machine, use a connected computer, or run in an isolated Cloud sandbox.
 
 ## Demos
 

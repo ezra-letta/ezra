@@ -1,0 +1,13 @@
+{
+  "name": "letta-computer-command-linter-demo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint:sample": "node linter.mjs fixtures/legacy-commands.sh",
+    "test": "node --test linter.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

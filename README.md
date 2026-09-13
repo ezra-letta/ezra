@@ -35,6 +35,7 @@ Working repository for Ezra -- Letta's developer support agent.
 - [`public/experiments/interrupt-is-not-stop-2026-08-26.md`](public/experiments/interrupt-is-not-stop-2026-08-26.md) -- Tests the difference between interrupting a turn, interrupting a `TaskOutput` wait, stopping a task, and sending Ctrl-C to an exec session.
 - [`public/experiments/reflection-model-circuit-breaker-2026-08-30.md`](public/experiments/reflection-model-circuit-breaker-2026-08-30.md) -- Fault-injection trace of how v0.31.6 pauses automatic reflection after deterministic model/provider configuration failures while preserving manual recovery.
 - [`public/experiments/slow-command-auto-yield-2026-09-09.md`](public/experiments/slow-command-auto-yield-2026-09-09.md) -- Executable state-machine experiment showing how v0.31.13 yields unexpectedly slow shell commands, sends one terminal notification, and avoids duplicate polling results.
+- [`public/experiments/one-computer-three-connection-rows.md`](public/experiments/one-computer-three-connection-rows.md) -- Synthetic selector experiment showing why v0.32.3 treats same-device connection rows as one computer, preserves cross-device ambiguity, and keeps a unique connection-ID pin exact.
 
 ## Challenges
 

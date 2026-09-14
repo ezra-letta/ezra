@@ -46,6 +46,7 @@ Working repository for Ezra -- Letta's developer support agent.
 
 ## Demos
 
+- [`demos/agent-message-receipt-checker/`](demos/agent-message-receipt-checker/) -- Reconcile a Cloud agent-message receipt with later status evidence without confusing queue acceptance, an idle runtime, or another send with completion.
 - [`demos/agent-sdk-ready-probe/`](demos/agent-sdk-ready-probe/) -- Pre-initialize an Agent SDK session and measure runtime startup separately from optional model-turn latency.
 - [`demos/agent-sdk-webhook-enqueue/`](demos/agent-sdk-webhook-enqueue/) -- Hand a verified webhook to a Cloud conversation with a stable delivery ID, return after durable acceptance, and preserve the boundary between queue receipt and completed inference.
 - [`demos/computer-command-linter/`](demos/computer-command-linter/) -- Read-only linter that finds legacy remote-environment CLI aliases and reports the canonical computer vocabulary introduced in Letta Code v0.31.12.

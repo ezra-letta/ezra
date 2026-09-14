@@ -12,6 +12,7 @@ Runnable examples for building with Letta. Each folder includes:
 
 | Demo | Surface | What it demonstrates | Time |
 | --- | --- | --- | --- |
+| [Agent-message receipt checker](agent-message-receipt-checker/) | Letta Code / Cloud agent messaging | Match queue receipts to later super-run evidence without treating acceptance, idle state, or a different send as completion | 2–5 minutes |
 | [Agent SDK `ready()` timing probe](agent-sdk-ready-probe/) | Letta Agent SDK | Pre-initialize runtime and transport, then separate startup timing from optional model-turn timing | 5–10 minutes |
 | [Durable Cloud webhook enqueue](agent-sdk-webhook-enqueue/) | Letta Agent SDK / Cloud | Hand off a verified event with a stable delivery ID, then return after queue acceptance rather than completed inference | 5–10 minutes |
 | [Computer-command linter](computer-command-linter/) | Letta Code CLI / remote computers | Find hidden compatibility aliases in scripts and docs, then report canonical `v0.31.12+` computer spellings without rewriting files | 2–5 minutes |

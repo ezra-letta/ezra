@@ -1,0 +1,18 @@
+{
+  "agent_id": "agent-example",
+  "conversation_id": "conv-example",
+  "runtime_status": {
+    "conversation_id": "conv-example",
+    "state": "IDLE",
+    "active_run_ids": [],
+    "loop_state": null
+  },
+  "latest_super_run": {
+    "id": "super-run-1",
+    "status": "COM",
+    "completed_at": "2026-09-14T16:00:00Z",
+    "errored_at": null,
+    "cancelled_at": null
+  },
+  "note": "This is the conversation's current state, not confirmation that a particular message completed."
+}

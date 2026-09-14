@@ -1,0 +1,10 @@
+{
+  "status": "queued",
+  "agent_id": "agent-example",
+  "conversation_id": "conv-example",
+  "client_message_id": "message-1",
+  "workflow_id": "workflow-1",
+  "super_run_id": "super-run-1",
+  "status_command": "letta messages status --agent agent-example --conversation conv-example",
+  "messages_command": "letta messages list --agent agent-example --conversation conv-example"
+}

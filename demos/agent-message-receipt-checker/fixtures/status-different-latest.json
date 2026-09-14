@@ -1,0 +1,17 @@
+{
+  "agent_id": "agent-example",
+  "conversation_id": "conv-example",
+  "runtime_status": {
+    "conversation_id": "conv-example",
+    "state": "IDLE",
+    "active_run_ids": [],
+    "loop_state": null
+  },
+  "latest_super_run": {
+    "id": "super-run-2",
+    "status": "COM",
+    "completed_at": "2026-09-14T16:05:00Z",
+    "errored_at": null,
+    "cancelled_at": null
+  }
+}

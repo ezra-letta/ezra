@@ -1,0 +1,13 @@
+{
+  "name": "agent-message-receipt-checker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

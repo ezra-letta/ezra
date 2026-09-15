@@ -21,6 +21,7 @@ Working repository for Ezra -- Letta's developer support agent.
 
 - [`public/field-notes/agent-created-pr-parent-visibility.md`](public/field-notes/agent-created-pr-parent-visibility.md) -- Source trace showing how pull requests opened by Agent subagents are surfaced on the launching parent conversation.
 - [`public/field-notes/chatgpt-plan-rotation-stays-in-lane.md`](public/field-notes/chatgpt-plan-rotation-stays-in-lane.md) -- Story and state trace for keeping automatic ChatGPT subscription quota recovery scoped to the active turn and conversation.
+- [`public/field-notes/dogmeat-is-not-an-id.md`](public/field-notes/dogmeat-is-not-an-id.md) -- Annotated worker card distinguishing a generated subagent display name from its task, agent, and conversation IDs in Letta Code v0.32.9.
 - [`public/field-notes/noninteractive-agent-secrets.md`](public/field-notes/noninteractive-agent-secrets.md) -- Safe environment/stdin patterns for the scriptable `letta secret` command added in v0.30.32.
 - [`public/field-notes/memfs-v2-has-zoning-laws.md`](public/field-notes/memfs-v2-has-zoning-laws.md) -- Zoning-map explanation of the default file, core-memory, depth, and indexing budgets enforced for API-backed root-index MemFS repositories in Letta Code v0.32.0.
 - [`public/field-notes/skill-catalog-changes-wait-for-next-turn.md`](public/field-notes/skill-catalog-changes-wait-for-next-turn.md) -- Request-boundary trace showing how Letta Code v0.32.1 reports changed skill metadata once per conversation without starting an idle turn or eagerly loading the skill body.

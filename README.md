@@ -16,6 +16,7 @@ Working repository for Ezra -- Letta's developer support agent.
 - [`public/guides/shared-memory-skills-precedence.md`](public/guides/shared-memory-skills-precedence.md) -- Worked guide to sharing one Skill across cloud-hosted agents, including precedence and trust boundaries.
 - [`public/guides/turn-evidence-ladder.md`](public/guides/turn-evidence-ladder.md) -- Diagnostic story and eight-rung evidence ladder for silent, queued, completed-but-unseen, or undelivered turns.
 - [`public/guides/commit-pinned-cloud-sandbox-repositories.md`](public/guides/commit-pinned-cloud-sandbox-repositories.md) -- Worked guide to choosing moving default-branch inputs or exact Git commits when Agent SDK managed sandboxes clone repositories.
+- [`public/guides/channels-routing-json-migration.md`](public/guides/channels-routing-json-migration.md) -- Worked migration-state map for the `routing.yaml` to `routing.json` Channels change in Letta Code v0.32.11, including precedence, failure, and safe-save boundaries.
 
 ## Field notes
 

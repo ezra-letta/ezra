@@ -44,6 +44,7 @@ Working repository for Ezra -- Letta's developer support agent.
 - [`public/challenges/feedback-or-memory.md`](public/challenges/feedback-or-memory.md) -- Eight-card classification game for routing agent corrections to scoped learning, product bugs to consent-gated feedback, and one-turn constraints to neither.
 - [`public/challenges/headless-state-footprint.md`](public/challenges/headless-state-footprint.md) -- Self-scoring comparison of normal, stateless, and agent-free ephemeral headless runs.
 - [`public/challenges/model-change-scope.md`](public/challenges/model-change-scope.md) -- Eight-card challenge for predicting when the JSON-first model CLI reads or writes a conversation override, agent default, reasoning-only update, or backend catalog.
+- [`public/challenges/what-does-letta-usage-measure.md`](public/challenges/what-does-letta-usage-measure.md) -- Nine-card scope challenge separating the credential-scoped `letta usage` meter from dollars, provider quota, session tokens, context occupancy, and model availability.
 - [`public/challenges/subagent-computer-routing.md`](public/challenges/subagent-computer-routing.md) -- Six routing cards for deciding when an Agent subagent should stay on the current machine, use a connected computer, or run in an isolated Cloud sandbox.
 
 ## Demos

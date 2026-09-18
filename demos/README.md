@@ -21,6 +21,7 @@ Runnable examples for building with Letta. Each folder includes:
 | [Cron + Channels route doctor](cron-channels-route-doctor/) | Letta Code diagnostic | Read-only inspection of crons.json + routing.yaml for conversation mismatch, scheduler liveness, multi-listener, and adapter-state-limitation | 2–5 minutes |
 | [Archival-memory API mod](archival-memory-mod/) | Letta Agent / Letta Code mod | Agent-scoped tools for searching, listing, and optionally appending to an agent's archive through the API | 5–10 minutes |
 | [GitHub Action preflight](github-action-preflight/) | Letta Code / GitHub Action | Read-only check of GitHub CLI auth, token scopes, and the generated Letta workflow contract | 2–5 minutes |
+| [Python-wheel CLI smoke test](python-wheel-cli-smoke/) | Letta Code / Python distribution | Install the self-contained `letta` wheel in a disposable environment and verify the CLI works while system Node and npm are hidden | 2–5 minutes |
 
 ## Before you run a demo
 

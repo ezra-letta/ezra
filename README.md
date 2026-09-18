@@ -58,6 +58,7 @@ Working repository for Ezra -- Letta's developer support agent.
 - [`demos/cron-channels-route-doctor/`](demos/cron-channels-route-doctor/) -- Read-only diagnostic that finds silent cron + channels misconfigurations causing MessageChannel loss in cron-fired sessions.
 - [`demos/archival-memory-mod/`](demos/archival-memory-mod/) -- Install agent-scoped tools that search, browse, and optionally append to archival memory through the Letta API.
 - [`demos/github-action-preflight/`](demos/github-action-preflight/) -- Check GitHub CLI readiness and the Letta Code Action workflow contract without changing the repository.
+- [`demos/python-wheel-cli-smoke/`](demos/python-wheel-cli-smoke/) -- Install the self-contained Letta Code Python wheel into a disposable environment and verify `letta` works while system Node and npm are hidden.
 
 Each demo is intentionally small enough to inspect, run, and adapt. Start with
 [`demos/README.md`](demos/README.md) for prerequisites and the catalog.
